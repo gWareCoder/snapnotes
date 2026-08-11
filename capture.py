@@ -18,6 +18,7 @@ class CaptureEngine(QObject):
         super().__init__()
         self.config = config
         self.db = db
+        self.banner = None
 
     def generate_filepath(self):
         save_dir = self.config.save_directory
@@ -50,9 +51,28 @@ class CaptureEngine(QObject):
         else:
             return self._capture_area_overlay(target_path)
 
+    def capture_window(self):
+        """Captures a specific application window by clicking it."""
+        return self.capture_area()
+
+    def capture_focus_app(self, delay_seconds=3):
+        """Shows floating banner allowing user to click & bring target application to focus before area capture."""
+        from ui.focus_banner import FocusBannerWidget
+        
+        if self.banner:
+            try:
+                self.banner.close()
+            except Exception:
+                pass
+
+        self.banner = FocusBannerWidget(countdown_seconds=delay_seconds)
+        self.banner.snip_requested.connect(self.capture_area)
+        self.banner.cancelled.connect(self.capture_cancelled.emit)
+        self.banner.show()
+
     def _capture_area_slurp(self, target_path):
         try:
-            # Run slurp to get selection rectangle
+            # Run slurp to get selection rectangle or clicked window bounds
             slurp_cmd = [
                 "slurp",
                 "-b", "#00000080",
@@ -84,7 +104,6 @@ class CaptureEngine(QObject):
             return None
 
     def _capture_area_overlay(self, target_path):
-        # Fallback PyQt widget overlay handled via UI overlay
         from ui.capture_overlay import CaptureOverlay
         self.overlay = CaptureOverlay(target_path)
         self.overlay.selection_made.connect(self._on_capture_success)

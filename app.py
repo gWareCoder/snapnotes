@@ -47,6 +47,12 @@ class SnapNotesApp(QObject):
         act_area = QAction(IconGenerator.create_camera_icon(18, color="#38bdf8", bg="transparent"), "📸 Capture Area", self)
         act_area.triggered.connect(self.on_capture_area)
 
+        act_focus = QAction("🎯 Focus Target App & Snip", self)
+        act_focus.triggered.connect(self.on_capture_focus_app)
+
+        act_win = QAction("🪟 Select App Window", self)
+        act_win.triggered.connect(self.on_capture_window)
+
         act_full = QAction("🖥️ Capture Fullscreen", self)
         act_full.triggered.connect(self.on_capture_fullscreen)
 
@@ -66,6 +72,8 @@ class SnapNotesApp(QObject):
         act_quit.triggered.connect(self.quit_app)
 
         menu.addAction(act_area)
+        menu.addAction(act_focus)
+        menu.addAction(act_win)
         menu.addAction(act_full)
         menu.addAction(act_delay)
         menu.addSeparator()
@@ -102,6 +110,14 @@ class SnapNotesApp(QObject):
         self.main_window.hide()
         self.capture_engine.capture_area()
 
+    def on_capture_focus_app(self):
+        self.main_window.hide()
+        self.capture_engine.capture_focus_app(delay_seconds=3)
+
+    def on_capture_window(self):
+        self.main_window.hide()
+        self.capture_engine.capture_window()
+
     def on_capture_fullscreen(self):
         self.main_window.hide()
         self.capture_engine.capture_fullscreen()
@@ -131,7 +147,7 @@ class SnapNotesApp(QObject):
             dlg.exec()
 
     def on_capture_cancelled(self):
-        # If cancelled, restore main window if it was visible before
+        # Restore main window if cancelled
         pass
 
     def on_note_saved(self, screenshot_id: int, note_text: str):

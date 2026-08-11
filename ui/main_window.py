@@ -93,7 +93,7 @@ class ScreenshotCard(QFrame):
         self.lbl_note.mousePressEvent = lambda e: self.edit_note_requested.emit(self.screenshot_id)
         layout.addWidget(self.lbl_note)
 
-        # Bottom Quick Action Buttons (Larger touch targets)
+        # Bottom Quick Action Buttons
         btn_row = QHBoxLayout()
         btn_row.setSpacing(4)
 
@@ -168,9 +168,9 @@ class MainWindow(QMainWindow):
         header_layout.setContentsMargins(12, 8, 12, 8)
         header_layout.setSpacing(8)
 
-        # Row 1: App Title + Primary Capture Action Buttons
+        # Row 1: App Title + Capture Modes (Area, Focus App, App Window, Full, Delay)
         row1 = QHBoxLayout()
-        row1.setSpacing(10)
+        row1.setSpacing(8)
 
         logo_lbl = QLabel()
         logo_lbl.setPixmap(IconGenerator.create_camera_icon(32, color="#38bdf8", bg="transparent").pixmap(32, 32))
@@ -180,7 +180,7 @@ class MainWindow(QMainWindow):
         title.setObjectName("appNameLabel")
         row1.addWidget(title)
 
-        row1.addSpacing(10)
+        row1.addSpacing(6)
 
         btn_cap_area = QPushButton("📸 Area")
         btn_cap_area.setObjectName("btnPrimary")
@@ -188,12 +188,22 @@ class MainWindow(QMainWindow):
         btn_cap_area.clicked.connect(self.trigger_capture_area)
         row1.addWidget(btn_cap_area)
 
+        btn_cap_focus = QPushButton("🎯 Focus App")
+        btn_cap_focus.setToolTip("Click target application to bring to front, then snip area")
+        btn_cap_focus.clicked.connect(self.trigger_capture_focus_app)
+        row1.addWidget(btn_cap_focus)
+
+        btn_cap_win = QPushButton("🪟 App Window")
+        btn_cap_win.setToolTip("Click any application window to capture it directly")
+        btn_cap_win.clicked.connect(self.trigger_capture_window)
+        row1.addWidget(btn_cap_win)
+
         btn_cap_full = QPushButton("🖥️ Full")
         btn_cap_full.setToolTip("Capture full screen")
         btn_cap_full.clicked.connect(self.trigger_capture_fullscreen)
         row1.addWidget(btn_cap_full)
 
-        btn_cap_delay = QPushButton("⏱️ 3s Delay")
+        btn_cap_delay = QPushButton("⏱️ 3s")
         btn_cap_delay.setToolTip("Capture after 3 second delay")
         btn_cap_delay.clicked.connect(self.trigger_capture_delayed)
         row1.addWidget(btn_cap_delay)
@@ -281,7 +291,7 @@ class MainWindow(QMainWindow):
         self.lbl_stats.setText(f"{total_items} Items ({total_mb:.1f} MB)")
 
         if not items:
-            empty_lbl = QLabel("📷 No screenshots found.\nClick '📸 Area' above to take your first screenshot!")
+            empty_lbl = QLabel("📷 No screenshots found.\nClick '📸 Area' or '🎯 Focus App' above to start!")
             empty_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
             empty_lbl.setStyleSheet("color: #64748b; font-size: 16px; margin-top: 40px;")
             self.gallery_layout.addWidget(empty_lbl, 0, 0)
@@ -303,6 +313,16 @@ class MainWindow(QMainWindow):
         self.hide()
         QApplication.processEvents()
         self.capture_engine.capture_area()
+
+    def trigger_capture_focus_app(self):
+        self.hide()
+        QApplication.processEvents()
+        self.capture_engine.capture_focus_app(delay_seconds=3)
+
+    def trigger_capture_window(self):
+        self.hide()
+        QApplication.processEvents()
+        self.capture_engine.capture_window()
 
     def trigger_capture_fullscreen(self):
         self.hide()

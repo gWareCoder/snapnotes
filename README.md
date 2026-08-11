@@ -4,15 +4,17 @@
 
 ![SnapNotes Banner](assets/banner.jpg)
 
-**SnapNotes** is a modern, lightweight, feature-rich screen capture and snippet management application built for Linux desktops. It allows you to quickly take screenshots of selected screen regions or full displays, specify custom storage locations, attach searchable text notes, browse high-resolution gallery histories, and operate seamlessly from your system tray.
+**SnapNotes** is a modern, lightweight, feature-rich screen capture and snippet management application built for Linux desktops. It allows you to quickly take screenshots of selected screen regions or target application windows, specify custom storage locations, attach searchable text notes, browse high-resolution gallery histories, and operate seamlessly from your system tray.
 
 ---
 
 ## 🚀 Features
 
-- **📸 Precision Area & Fullscreen Capture**:
-  - **Wayland Native**: Powered by `slurp` and `grim` for smooth, high-precision area selection.
-  - **Fullscreen & Timer Delays**: One-click fullscreen capture and 3-second countdown timer for capturing open menus and popups.
+- **📸 Precision Area & Focus Application Capture**:
+  - **`🎯 Focus Target App` Mode**: Minimizes SnapNotes and displays a floating focus banner (`ui/focus_banner.py`), giving you time to click on any application window (Browser, VS Code, Terminal) to bring it into front focus before capturing!
+  - **`🪟 App Window` Mode**: Direct window selection powered by `slurp` — hover over any window to highlight its surface boundaries and click to snap it!
+  - **`📸 Area` & Fullscreen**: Custom region selection or instant full desktop capture.
+  - **`⏱️ Timer Delay`**: 3-second countdown timer for capturing open menus and dropdowns.
   - **Auto Copy**: Automatically copies captured screenshots to the system clipboard.
 
 - **📁 Customizable Storage Location**:
@@ -40,7 +42,7 @@
 
 - **📥 System Tray Integration**:
   - Runs in the background with a system tray icon (`QSystemTrayIcon`).
-  - Right-click tray menu for quick capture shortcuts, opening gallery, save path options, or quitting.
+  - Right-click tray menu for quick capture shortcuts (`📸 Area`, `🎯 Focus App`, `🪟 App Window`), opening gallery, save path options, or quitting.
   - Left-click tray icon toggles the history window.
 
 ---
@@ -83,6 +85,7 @@ flowchart TD
     subgraph UILayer ["User Interface (PyQt6)"]
         MainWin["Main Gallery Window (main_window.py)"]
         ViewerWin["Full Image Viewer (viewer_window.py)"]
+        FocusBanner["Focus Banner Widget (focus_banner.py)"]
         PostCapDlg["Post-Capture Note Dialog (post_capture_dialog.py)"]
         SettingsDlg["Settings Dialog (settings_dialog.py)"]
     end
@@ -94,6 +97,7 @@ flowchart TD
 
     App --> Engine
     App --> MainWin
+    Engine --> FocusBanner
     Engine --> Slurp & Grim
     Grim --> Filesystem
     Engine --> DB
@@ -106,27 +110,11 @@ flowchart TD
     SettingsDlg --> Config
 ```
 
-### Module Overview
-
-- **`main.py`**: CLI parser and entry point supporting `--tray`, `--capture`, and `--fullscreen`.
-- **`app.py`**: Application controller managing `QApplication`, system tray menu, and signal routing.
-- **`capture.py`**: Screen capture engine executing `slurp`/`grim` area selection, fullscreen capture, and timer countdowns.
-- **`database.py`**: SQLite storage for screenshot metadata (resolution, timestamp, filesize, note) and thumbnail caching (`~/.cache/snapnotes/thumbnails`).
-- **`config.py`**: Persistent JSON configuration (`~/.config/snapnotes/config.json`).
-- **`icons.py`**: Procedural vector-rendered QIcons for tray and UI controls.
-- **`ui/main_window.py`**: Gallery history window with search, sorting, and header controls.
-- **`ui/viewer_window.py`**: Interactive image inspector with zoom, pan, note editor, and file actions.
-- **`ui/post_capture_dialog.py`**: Quick post-capture prompt dialog for notes.
-- **`ui/settings_dialog.py`**: Save path configuration and user preferences.
-- **`ui/styles.py`**: Modern QSS dark theme stylesheet.
-
 ---
 
 ## 🛠️ Prerequisites & Installation
 
 ### 1. Install Dependencies (Debian / Ubuntu / Raspberry Pi OS)
-
-SnapNotes requires Python 3.11+, PyQt6, Pillow, and Wayland screenshot utilities (`grim` and `slurp`):
 
 ```bash
 sudo apt update
@@ -142,8 +130,6 @@ cd snapnotes
 
 ### 3. Install Executable Launcher
 
-Create a symlink or executable wrapper in your user path:
-
 ```bash
 mkdir -p ~/.local/bin ~/.local/share/applications
 
@@ -155,23 +141,6 @@ exec /usr/bin/python3 /home/tomg/snapnotes/main.py "$@"
 EOF
 
 chmod +x ~/.local/bin/snapnotes
-```
-
-### 4. Install Desktop Menu Entry
-
-```bash
-cat << 'EOF' > ~/.local/share/applications/snapnotes.desktop
-[Desktop Entry]
-Name=SnapNotes
-Comment=Screen capture, screenshot history & notes tool
-Exec=/home/tomg/.local/bin/snapnotes %F
-Icon=camera-photo
-Terminal=false
-Type=Application
-Categories=Utility;Graphics;
-EOF
-
-chmod +x ~/.local/share/applications/snapnotes.desktop
 ```
 
 ---
@@ -194,14 +163,6 @@ snapnotes --capture
 snapnotes --fullscreen
 ```
 
-### Setting up a Global Keyboard Shortcut
-
-You can bind OS global hotkeys (such as `Ctrl+Shift+S` or `PrintScreen`) in your desktop settings (Labwc, Gnome, Sway, KDE, XFCE) to run:
-
-```bash
-snapnotes --capture
-```
-
 ---
 
 ## ⚙️ Configuration & Data Storage
@@ -209,7 +170,7 @@ snapnotes --capture
 - **Configuration File**: `~/.config/snapnotes/config.json`
 - **Database File**: `~/.config/snapnotes/snapnotes.db`
 - **Thumbnail Cache**: `~/.cache/snapnotes/thumbnails/`
-- **Default Screenshot Directory**: `~/Pictures/Screenshots/` (Customizable via Settings dialog)
+- **Default Screenshot Directory**: `~/Pictures/Screenshots/`
 
 ---
 
