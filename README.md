@@ -8,42 +8,48 @@
 
 ---
 
-## 🚀 Features
+## 🚀 Features & Menu Choices
 
-- **📸 Precision Area & Focus Application Capture**:
-  - **`🎯 Focus Target App` Mode**: Minimizes SnapNotes and displays a floating focus banner (`ui/focus_banner.py`), giving you time to click on any application window (Browser, VS Code, Terminal) to bring it into front focus before capturing!
-  - **`🪟 App Window` Mode**: Direct window selection powered by `slurp` — hover over any window to highlight its surface boundaries and click to snap it!
-  - **`📸 Area` & Fullscreen**: Custom region selection or instant full desktop capture.
-  - **`⏱️ Timer Delay`**: 3-second countdown timer for capturing open menus and dropdowns.
-  - **Auto Copy**: Automatically copies captured screenshots to the system clipboard.
+### 📥 1. System Tray Menu Choices (Right-click System Tray Icon)
 
-- **📁 Customizable Storage Location**:
-  - Specify custom save paths (e.g. `~/Pictures/Screenshots` or any custom drive/directory).
-  - Dynamic path selector with instant folder browsing via system file manager (`xdg-open`).
+| Menu Choice | Description |
+| :--- | :--- |
+| **Capture Area** | Click & drag a rubberband box over any region of the screen to capture a snippet. |
+| **Focus Target App & Snip** | Displays a top banner allowing you to click any background application (Browser, Terminal, Editor) to bring it to the front before snipping. |
+| **Select App Window** | Hover over any open window to highlight its boundaries, and click to snap it directly. |
+| **Capture Fullscreen** | Instantly captures your entire desktop display. |
+| **Capture Delayed (3s)** | Starts a 3-second countdown timer for capturing open dropdown menus. |
+| **Open Gallery & History** | Opens or raises the main SnapNotes history window. |
+| **Open Save Folder** | Opens your screenshot save directory in the system file manager (`xdg-open`). |
+| **Settings** | Opens the options dialog to customize save paths and preferences. |
+| **Quit SnapNotes** | Closes and exits the application. |
 
-- **🖼️ Searchable History & Thumbnail Gallery**:
-  - Grid view featuring high-quality cached thumbnail previews.
-  - Resolution badges (e.g. `1280×720`), file sizes, and timestamps.
-  - **Real-Time Search**: Instant filtering by note content, file names, or dates.
-  - **Sorting**: Sort history by Newest First, Oldest First, Largest Size, or Smallest Size.
+---
 
-- **🔍 Full-Resolution Viewer with Pan & Zoom**:
-  - Click any thumbnail to view the actual full-resolution screenshot.
-  - **Pan & Zoom**: Interactive mouse wheel zoom, fit-to-screen, and 100% actual size toggle.
-  - **Metadata & Controls**: View resolution, file size, storage path, edit notes live, or copy to clipboard.
+### 🖥️ 2. Main Window Header Menu Choices
 
-- **📝 Note-Taking & Annotations**:
-  - Optional **Post-Capture Popup** for writing notes immediately after capture.
-  - Edit or view notes anytime from the gallery cards or detail view.
-  - All notes are saved to an SQLite database and indexed for search.
+| Button / Control | Description |
+| :--- | :--- |
+| **Area** *(Primary)* | Trigger interactive region snippet selection. |
+| **Focus App** | Bring a target application into front focus before capturing. |
+| **App Window** | Select and snap an open application window directly. |
+| **Fullscreen** | Capture full active desktop. |
+| **3s Delay** | Capture after 3-second timer countdown. |
+| **Save Folder** | Open current screenshot storage directory. |
+| **Settings** | Modify save path and prompt behavior. |
+| **Search Input** | Real-time filter across notes, filenames, and dates. |
+| **Sort Dropdown** | Sort history by **Newest First**, **Oldest First**, **Largest Size**, or **Smallest Size**. |
 
-- **🗑️ Safe File & Record Deletion**:
-  - Single-click delete removes both the database metadata record and the image file from disk after user confirmation.
+---
 
-- **📥 System Tray Integration**:
-  - Runs in the background with a system tray icon (`QSystemTrayIcon`).
-  - Right-click tray menu for quick capture shortcuts (`📸 Area`, `🎯 Focus App`, `🪟 App Window`), opening gallery, save path options, or quitting.
-  - Left-click tray icon toggles the history window.
+### 🖼️ 3. Individual Screenshot Card Actions
+
+| Action | Description |
+| :--- | :--- |
+| **View** | Opens the **Full-Resolution Viewer** with pan, mouse-wheel zoom (`Fit Screen`, `100% Actual`), and metadata. |
+| **Copy** | Copies the screenshot image to the system clipboard. |
+| **Edit Note / + Add Note** | Attach or modify searchable text notes attached to the screenshot. |
+| **Delete** | Removes the screenshot metadata and deletes the image file from disk after confirmation. |
 
 ---
 
