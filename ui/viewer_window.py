@@ -103,7 +103,7 @@ class FullViewerDialog(QDialog):
         top_layout.setContentsMargins(12, 8, 12, 8)
 
         self.title_label = QLabel("Screenshot Details")
-        self.title_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #38bdf8;")
+        self.title_label.setStyleSheet("font-weight: bold; font-size: 16pt; color: #38bdf8;")
         top_layout.addWidget(self.title_label)
         top_layout.addStretch()
 
@@ -118,8 +118,8 @@ class FullViewerDialog(QDialog):
 
         # Close button
         btn_close = QPushButton("✕")
-        btn_close.setFixedSize(34, 34)
-        btn_close.setStyleSheet("font-size: 16px; font-weight: bold;")
+        btn_close.setFixedSize(36, 36)
+        btn_close.setStyleSheet("font-size: 16pt; font-weight: bold;")
         btn_close.clicked.connect(self.accept)
         top_layout.addWidget(btn_close)
 
@@ -164,8 +164,8 @@ class FullViewerDialog(QDialog):
 
         # Right Panel
         panel = QFrame()
-        panel.setMaximumWidth(320)
-        panel.setMinimumWidth(240)
+        panel.setMaximumWidth(340)
+        panel.setMinimumWidth(260)
         panel.setStyleSheet("background-color: #1e293b; border-left: 1px solid #334155;")
         panel_layout = QVBoxLayout(panel)
         panel_layout.setContentsMargins(14, 14, 14, 14)
@@ -173,25 +173,25 @@ class FullViewerDialog(QDialog):
 
         # Metadata Header
         meta_title = QLabel("Information")
-        meta_title.setStyleSheet("font-size: 15px; font-weight: bold; color: #f8fafc;")
+        meta_title.setStyleSheet("font-size: 15pt; font-weight: bold; color: #f8fafc;")
         panel_layout.addWidget(meta_title)
 
         self.info_filename = QLabel()
         self.info_filename.setWordWrap(True)
-        self.info_filename.setStyleSheet("font-weight: bold; color: #38bdf8; font-size: 14px;")
+        self.info_filename.setStyleSheet("font-weight: bold; color: #38bdf8; font-size: 14pt;")
 
         self.info_dims = QLabel()
-        self.info_dims.setStyleSheet("color: #94a3b8; font-size: 13px;")
+        self.info_dims.setStyleSheet("color: #94a3b8; font-size: 13pt;")
 
         self.info_size = QLabel()
-        self.info_size.setStyleSheet("color: #94a3b8; font-size: 13px;")
+        self.info_size.setStyleSheet("color: #94a3b8; font-size: 13pt;")
 
         self.info_date = QLabel()
-        self.info_date.setStyleSheet("color: #94a3b8; font-size: 13px;")
+        self.info_date.setStyleSheet("color: #94a3b8; font-size: 13pt;")
 
         self.info_path = QLabel()
         self.info_path.setWordWrap(True)
-        self.info_path.setStyleSheet("color: #64748b; font-size: 12px;")
+        self.info_path.setStyleSheet("color: #64748b; font-size: 12pt;")
 
         panel_layout.addWidget(self.info_filename)
         panel_layout.addWidget(self.info_dims)
@@ -207,17 +207,17 @@ class FullViewerDialog(QDialog):
 
         # Note Section
         note_hdr = QLabel("📝 Notes")
-        note_hdr.setStyleSheet("font-size: 15px; font-weight: bold; color: #f8fafc;")
+        note_hdr.setStyleSheet("font-size: 15pt; font-weight: bold; color: #f8fafc;")
         panel_layout.addWidget(note_hdr)
 
         self.note_edit = QTextEdit()
         self.note_edit.setPlaceholderText("Write notes or details about this screenshot...")
-        self.note_edit.setStyleSheet("min-height: 100px; font-size: 14px;")
+        self.note_edit.setStyleSheet("min-height: 100px; font-size: 14pt;")
         panel_layout.addWidget(self.note_edit)
 
         self.btn_save_note = QPushButton("Save Note")
         self.btn_save_note.setObjectName("btnSuccess")
-        self.btn_save_note.setIcon(IconGenerator.create_note_icon(16, color="#ffffff"))
+        self.btn_save_note.setIcon(IconGenerator.create_note_icon(18, color="#ffffff"))
         self.btn_save_note.clicked.connect(self.save_note)
         panel_layout.addWidget(self.btn_save_note)
 
@@ -225,15 +225,15 @@ class FullViewerDialog(QDialog):
 
         # Action Buttons
         actions_hdr = QLabel("Actions")
-        actions_hdr.setStyleSheet("font-size: 14px; font-weight: bold; color: #94a3b8;")
+        actions_hdr.setStyleSheet("font-size: 14pt; font-weight: bold; color: #94a3b8;")
         panel_layout.addWidget(actions_hdr)
 
         self.btn_copy = QPushButton("Copy Image")
-        self.btn_copy.setIcon(IconGenerator.create_copy_icon(16))
+        self.btn_copy.setIcon(IconGenerator.create_copy_icon(18))
         self.btn_copy.clicked.connect(self.copy_image)
 
         self.btn_open_folder = QPushButton("Open Folder")
-        self.btn_open_folder.setIcon(IconGenerator.create_folder_icon(16))
+        self.btn_open_folder.setIcon(IconGenerator.create_folder_icon(18))
         self.btn_open_folder.clicked.connect(self.open_folder)
 
         self.btn_open_sys = QPushButton("System Viewer")
@@ -241,7 +241,7 @@ class FullViewerDialog(QDialog):
 
         self.btn_delete = QPushButton("Delete Screenshot")
         self.btn_delete.setObjectName("btnDanger")
-        self.btn_delete.setIcon(IconGenerator.create_trash_icon(16, color="#ffffff"))
+        self.btn_delete.setIcon(IconGenerator.create_trash_icon(18, color="#ffffff"))
         self.btn_delete.clicked.connect(self.delete_item)
 
         panel_layout.addWidget(self.btn_copy)

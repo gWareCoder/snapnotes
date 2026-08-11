@@ -40,16 +40,21 @@ class DatabaseManager:
         if not os.path.exists(filepath):
             return ""
         try:
+            import hashlib
             filename = os.path.basename(filepath)
-            thumb_filename = f"thumb_{hash(filepath)}_{filename}"
+            path_hash = hashlib.md5(filepath.encode('utf-8')).hexdigest()[:12]
+            thumb_filename = f"thumb_{path_hash}_{filename}"
+            if not thumb_filename.lower().endswith((".png", ".jpg", ".jpeg")):
+                thumb_filename += ".png"
             thumb_path = os.path.join(THUMB_DIR, thumb_filename)
             
-            if os.path.exists(thumb_path):
+            if os.path.exists(thumb_path) and os.path.getsize(thumb_path) > 0:
                 return thumb_path
 
             with Image.open(filepath) as img:
                 img.thumbnail(size)
-                # Convert RGBA to RGB if saving as JPEG, but PNG works for all
+                if img.mode in ("RGBA", "P"):
+                    img = img.convert("RGB")
                 img.save(thumb_path, format="PNG")
             return thumb_path
         except Exception as e:
@@ -154,6 +159,23 @@ class DatabaseManager:
             return
         
         valid_exts = {".png", ".jpg", ".jpeg", ".bmp", ".webp"}
+        
+        # 1. Clean records for missing files
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, filepath, thumbpath FROM screenshots")
+            rows = cursor.fetchall()
+            for r in rows:
+                if not os.path.exists(r["filepath"]):
+                    cursor.execute("DELETE FROM screenshots WHERE id = ?", (r["id"],))
+                    if r["thumbpath"] and os.path.exists(r["thumbpath"]):
+                        try:
+                            os.remove(r["thumbpath"])
+                        except Exception:
+                            pass
+            conn.commit()
+
+        # 2. Add new files from save_dir
         for f in os.listdir(save_dir):
             ext = os.path.splitext(f)[1].lower()
             if ext in valid_exts:
@@ -161,6 +183,11 @@ class DatabaseManager:
                 if os.path.isfile(full_path):
                     with self.get_connection() as conn:
                         cursor = conn.cursor()
-                        cursor.execute("SELECT id FROM screenshots WHERE filepath = ?", (full_path,))
-                        if not cursor.fetchone():
+                        cursor.execute("SELECT id, thumbpath FROM screenshots WHERE filepath = ?", (full_path,))
+                        row = cursor.fetchone()
+                        if not row:
                             self.add_screenshot(full_path)
+                        elif not row["thumbpath"] or not os.path.exists(row["thumbpath"]):
+                            new_thumb = self.generate_thumbnail(full_path)
+                            cursor.execute("UPDATE screenshots SET thumbpath = ? WHERE id = ?", (new_thumb, row["id"]))
+                            conn.commit()

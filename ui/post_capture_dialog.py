@@ -22,7 +22,7 @@ class PostCaptureDialog(QDialog):
 
         self.setWindowTitle("Screenshot Captured")
         self.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool | Qt.WindowType.FramelessWindowHint)
-        self.setMinimumWidth(400)
+        self.setMinimumWidth(440)
 
         self.init_ui()
 
@@ -41,24 +41,24 @@ class PostCaptureDialog(QDialog):
         # Header with title and close X button
         header = QHBoxLayout()
         title_label = QLabel("📸 Screenshot Captured!")
-        title_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #38bdf8;")
+        title_label.setStyleSheet("font-weight: bold; font-size: 16pt; color: #38bdf8;")
         header.addWidget(title_label)
         header.addStretch()
 
         close_btn = QPushButton("✕")
-        close_btn.setFixedSize(28, 28)
-        close_btn.setStyleSheet("background: transparent; border: none; font-size: 16px; color: #94a3b8; font-weight: bold;")
+        close_btn.setFixedSize(32, 32)
+        close_btn.setStyleSheet("background: transparent; border: none; font-size: 16pt; color: #94a3b8; font-weight: bold;")
         close_btn.clicked.connect(self.accept)
         header.addWidget(close_btn)
         card_layout.addLayout(header)
 
         # Content horizontal layout: Thumbnail preview + Metadata info
         body = QHBoxLayout()
-        body.setSpacing(12)
+        body.setSpacing(14)
         
         # Thumbnail label
         self.thumb_label = QLabel()
-        self.thumb_label.setFixedSize(140, 100)
+        self.thumb_label.setFixedSize(160, 110)
         self.thumb_label.setStyleSheet("background-color: #0f172a; border-radius: 6px; border: 1px solid #334155;")
         self.thumb_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.load_thumbnail()
@@ -67,13 +67,13 @@ class PostCaptureDialog(QDialog):
         # Details
         info_layout = QVBoxLayout()
         fn_label = QLabel(os.path.basename(self.filepath))
-        fn_label.setStyleSheet("font-weight: bold; font-size: 13px; color: #ffffff;")
+        fn_label.setStyleSheet("font-weight: bold; font-size: 14pt; color: #ffffff;")
         fn_label.setWordWrap(True)
 
         w, h = self.item_data.get("width", 0), self.item_data.get("height", 0)
         size_kb = self.item_data.get("filesize", 0) / 1024.0
         meta_label = QLabel(f"Dimensions: {w} × {h} px\nSize: {size_kb:.1f} KB")
-        meta_label.setStyleSheet("font-size: 12px; color: #94a3b8;")
+        meta_label.setStyleSheet("font-size: 13pt; color: #94a3b8;")
 
         info_layout.addWidget(fn_label)
         info_layout.addWidget(meta_label)
@@ -84,12 +84,12 @@ class PostCaptureDialog(QDialog):
 
         # Note Input
         note_hdr = QLabel("📝 Add Note / Description:")
-        note_hdr.setStyleSheet("font-size: 13px; color: #38bdf8; font-weight: bold;")
+        note_hdr.setStyleSheet("font-size: 14pt; color: #38bdf8; font-weight: bold;")
         card_layout.addWidget(note_hdr)
 
         self.note_edit = QLineEdit()
         self.note_edit.setPlaceholderText("Type a note about this screenshot...")
-        self.note_edit.setStyleSheet("font-size: 15px; padding: 8px 12px;")
+        self.note_edit.setStyleSheet("font-size: 14pt; padding: 8px 12px;")
         self.note_edit.setText(self.item_data.get("note", ""))
         self.note_edit.returnPressed.connect(self.on_save_note)
         card_layout.addWidget(self.note_edit)
@@ -99,7 +99,7 @@ class PostCaptureDialog(QDialog):
         btn_row.setSpacing(6)
 
         self.btn_copy = QPushButton("Copy")
-        self.btn_copy.setIcon(IconGenerator.create_copy_icon(16))
+        self.btn_copy.setIcon(IconGenerator.create_copy_icon(18))
         self.btn_copy.clicked.connect(self.on_copy)
 
         self.btn_view = QPushButton("View")
@@ -107,12 +107,12 @@ class PostCaptureDialog(QDialog):
 
         self.btn_save = QPushButton("Save Note")
         self.btn_save.setObjectName("btnPrimary")
-        self.btn_save.setIcon(IconGenerator.create_note_icon(16, color="#ffffff"))
+        self.btn_save.setIcon(IconGenerator.create_note_icon(18, color="#ffffff"))
         self.btn_save.clicked.connect(self.on_save_note)
 
         self.btn_delete = QPushButton("Delete")
         self.btn_delete.setObjectName("btnDanger")
-        self.btn_delete.setIcon(IconGenerator.create_trash_icon(16, color="#ffffff"))
+        self.btn_delete.setIcon(IconGenerator.create_trash_icon(18, color="#ffffff"))
         self.btn_delete.clicked.connect(self.on_discard)
 
         btn_row.addWidget(self.btn_copy)
@@ -129,7 +129,7 @@ class PostCaptureDialog(QDialog):
     def load_thumbnail(self):
         pix = QPixmap(self.thumbpath)
         if not pix.isNull():
-            scaled = pix.scaled(140, 100, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+            scaled = pix.scaled(160, 110, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
             self.thumb_label.setPixmap(scaled)
 
     def position_on_screen(self):

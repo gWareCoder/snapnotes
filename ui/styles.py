@@ -1,11 +1,11 @@
 DARK_STYLE = """
-/* SnapNotes Modern Dark Theme — Small Screen & Handheld Optimized */
+/* SnapNotes Modern Dark Theme — 14pt Font & Handheld Optimized */
 
 QWidget {
     background-color: #0f172a;
     color: #f8fafc;
     font-family: 'Segoe UI', 'Ubuntu', 'Roboto', sans-serif;
-    font-size: 15px;
+    font-size: 14pt;
 }
 
 QMainWindow, QDialog {
@@ -20,24 +20,24 @@ QMainWindow, QDialog {
 }
 
 #appNameLabel {
-    font-size: 20px;
+    font-size: 20pt;
     font-weight: bold;
     color: #38bdf8;
 }
 
 #statsLabel {
     color: #94a3b8;
-    font-size: 13px;
+    font-size: 12pt;
 }
 
-/* Push Buttons — Larger Hit Targets for Touch/Trackball */
+/* Push Buttons — 14pt Large Click Targets */
 QPushButton {
     background-color: #1e293b;
     color: #f8fafc;
     border: 1px solid #334155;
     border-radius: 8px;
     padding: 8px 16px;
-    font-size: 14px;
+    font-size: 14pt;
     font-weight: 600;
 }
 
@@ -54,7 +54,7 @@ QPushButton#btnPrimary {
     background-color: #0284c7;
     color: #ffffff;
     border: none;
-    font-size: 15px;
+    font-size: 14pt;
     font-weight: bold;
     padding: 9px 18px;
 }
@@ -67,7 +67,7 @@ QPushButton#btnDanger {
     background-color: #dc2626;
     color: #ffffff;
     border: none;
-    font-size: 14px;
+    font-size: 14pt;
     font-weight: bold;
 }
 
@@ -79,7 +79,7 @@ QPushButton#btnSuccess {
     background-color: #059669;
     color: #ffffff;
     border: none;
-    font-size: 14px;
+    font-size: 14pt;
     font-weight: bold;
 }
 
@@ -87,14 +87,14 @@ QPushButton#btnSuccess:hover {
     background-color: #047857;
 }
 
-/* Line Edit & Text Edit — High Contrast & Large Text */
+/* Line Edit & Text Edit — 14pt High Contrast */
 QLineEdit, QTextEdit, QPlainTextEdit {
     background-color: #1e293b;
     color: #ffffff;
     border: 1px solid #334155;
     border-radius: 8px;
     padding: 8px 12px;
-    font-size: 15px;
+    font-size: 14pt;
     selection-background-color: #0284c7;
 }
 
@@ -109,7 +109,7 @@ QComboBox {
     border: 1px solid #334155;
     border-radius: 8px;
     padding: 8px 12px;
-    font-size: 14px;
+    font-size: 14pt;
     font-weight: 500;
 }
 
@@ -125,7 +125,7 @@ QComboBox QAbstractItemView {
     color: #ffffff;
     selection-background-color: #0284c7;
     border: 1px solid #334155;
-    font-size: 14px;
+    font-size: 14pt;
 }
 
 /* Scroll Area & Scroll Bar — Touch / Trackball Friendly */
@@ -137,14 +137,14 @@ QScrollArea {
 QScrollBar:vertical {
     border: none;
     background-color: #0f172a;
-    width: 14px;
+    width: 16px;
     margin: 0px;
 }
 
 QScrollBar::handle:vertical {
     background-color: #334155;
     min-height: 35px;
-    border-radius: 7px;
+    border-radius: 8px;
 }
 
 QScrollBar::handle:vertical:hover {
@@ -174,20 +174,20 @@ QToolTip {
     border: 1px solid #38bdf8;
     border-radius: 6px;
     padding: 6px 10px;
-    font-size: 13px;
+    font-size: 13pt;
 }
 
 /* Checkboxes */
 QCheckBox {
     color: #f8fafc;
     spacing: 10px;
-    font-size: 14px;
+    font-size: 14pt;
 }
 
 QCheckBox::indicator {
-    width: 22px;
-    height: 22px;
-    border-radius: 5px;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
     border: 1px solid #334155;
     background-color: #1e293b;
 }

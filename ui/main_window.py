@@ -27,7 +27,7 @@ class ScreenshotCard(QFrame):
         self.screenshot_id = item_data["id"]
 
         self.setObjectName("cardFrame")
-        self.setFixedSize(230, 270)
+        self.setFixedSize(260, 310)
 
         self.init_ui()
 
@@ -38,16 +38,31 @@ class ScreenshotCard(QFrame):
 
         # Thumbnail Label
         self.thumb_label = QLabel()
-        self.thumb_label.setFixedSize(210, 130)
-        self.thumb_label.setStyleSheet("background-color: #0f172a; border-radius: 6px;")
+        self.thumb_label.setFixedSize(240, 140)
+        self.thumb_label.setStyleSheet("background-color: #0f172a; border-radius: 6px; border: 1px solid #334155;")
         self.thumb_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        thumbpath = self.item_data.get("thumbpath") or self.item_data["filepath"]
+        filepath = self.item_data["filepath"]
+        thumbpath = self.item_data.get("thumbpath") or filepath
+        
+        pix_loaded = False
         if os.path.exists(thumbpath):
             pix = QPixmap(thumbpath)
             if not pix.isNull():
-                scaled = pix.scaled(210, 130, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+                scaled = pix.scaled(240, 140, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
                 self.thumb_label.setPixmap(scaled)
+                pix_loaded = True
+        
+        if not pix_loaded and os.path.exists(filepath):
+            pix = QPixmap(filepath)
+            if not pix.isNull():
+                scaled = pix.scaled(240, 140, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+                self.thumb_label.setPixmap(scaled)
+                pix_loaded = True
+
+        if not pix_loaded:
+            self.thumb_label.setText("📷 Preview Unavailable")
+            self.thumb_label.setStyleSheet("background-color: #0f172a; color: #64748b; font-size: 12pt; border-radius: 6px;")
 
         self.thumb_label.setCursor(Qt.CursorShape.PointingHandCursor)
         self.thumb_label.mousePressEvent = lambda e: self.clicked.emit(self.screenshot_id)
@@ -56,14 +71,14 @@ class ScreenshotCard(QFrame):
         # Info line 1: Filename + Resolution badge
         info_row1 = QHBoxLayout()
         fn = self.item_data["filename"]
-        fn_truncated = fn if len(fn) <= 17 else fn[:14] + "..."
+        fn_truncated = fn if len(fn) <= 16 else fn[:13] + "..."
         lbl_fn = QLabel(fn_truncated)
         lbl_fn.setToolTip(fn)
-        lbl_fn.setStyleSheet("font-weight: bold; color: #ffffff; font-size: 13px;")
+        lbl_fn.setStyleSheet("font-weight: bold; color: #ffffff; font-size: 13pt;")
 
         w, h = self.item_data.get("width", 0), self.item_data.get("height", 0)
         lbl_res = QLabel(f"{w}×{h}")
-        lbl_res.setStyleSheet("background-color: #0284c7; color: #ffffff; border-radius: 4px; padding: 2px 6px; font-size: 11px; font-weight: bold;")
+        lbl_res.setStyleSheet("background-color: #0284c7; color: #ffffff; border-radius: 4px; padding: 2px 6px; font-size: 11pt; font-weight: bold;")
 
         info_row1.addWidget(lbl_fn)
         info_row1.addStretch()
@@ -74,20 +89,20 @@ class ScreenshotCard(QFrame):
         ts = self.item_data.get("timestamp", "")
         size_kb = self.item_data.get("filesize", 0) / 1024.0
         lbl_meta = QLabel(f"{ts} • {size_kb:.0f}KB")
-        lbl_meta.setStyleSheet("color: #94a3b8; font-size: 12px;")
+        lbl_meta.setStyleSheet("color: #94a3b8; font-size: 12pt;")
         layout.addWidget(lbl_meta)
 
         # Note Snippet Box
         note_text = self.item_data.get("note", "").strip()
         self.lbl_note = QLabel()
         if note_text:
-            snippet = note_text if len(note_text) <= 26 else note_text[:23] + "..."
+            snippet = note_text if len(note_text) <= 24 else note_text[:21] + "..."
             self.lbl_note.setText(f"📝 {snippet}")
-            self.lbl_note.setStyleSheet("color: #10b981; font-size: 13px; font-weight: 500;")
+            self.lbl_note.setStyleSheet("color: #10b981; font-size: 13pt; font-weight: 500;")
             self.lbl_note.setToolTip(note_text)
         else:
             self.lbl_note.setText("+ Add note...")
-            self.lbl_note.setStyleSheet("color: #64748b; font-size: 12px; font-style: italic;")
+            self.lbl_note.setStyleSheet("color: #64748b; font-size: 12pt; font-style: italic;")
 
         self.lbl_note.setCursor(Qt.CursorShape.PointingHandCursor)
         self.lbl_note.mousePressEvent = lambda e: self.edit_note_requested.emit(self.screenshot_id)
@@ -98,25 +113,25 @@ class ScreenshotCard(QFrame):
         btn_row.setSpacing(4)
 
         btn_view = QPushButton("View")
-        btn_view.setStyleSheet("padding: 4px 10px; font-size: 13px;")
+        btn_view.setStyleSheet("padding: 5px 12px; font-size: 13pt;")
         btn_view.clicked.connect(lambda: self.clicked.emit(self.screenshot_id))
 
         btn_copy = QPushButton()
-        btn_copy.setFixedSize(30, 30)
-        btn_copy.setIcon(IconGenerator.create_copy_icon(16))
+        btn_copy.setFixedSize(34, 34)
+        btn_copy.setIcon(IconGenerator.create_copy_icon(18))
         btn_copy.setToolTip("Copy Image")
         btn_copy.clicked.connect(lambda: self.copy_requested.emit(self.screenshot_id))
 
         btn_note = QPushButton()
-        btn_note.setFixedSize(30, 30)
-        btn_note.setIcon(IconGenerator.create_note_icon(16))
+        btn_note.setFixedSize(34, 34)
+        btn_note.setIcon(IconGenerator.create_note_icon(18))
         btn_note.setToolTip("Edit Note")
         btn_note.clicked.connect(lambda: self.edit_note_requested.emit(self.screenshot_id))
 
         btn_del = QPushButton()
-        btn_del.setFixedSize(30, 30)
+        btn_del.setFixedSize(34, 34)
         btn_del.setObjectName("btnDanger")
-        btn_del.setIcon(IconGenerator.create_trash_icon(16, color="#ffffff"))
+        btn_del.setIcon(IconGenerator.create_trash_icon(18, color="#ffffff"))
         btn_del.setToolTip("Delete Screenshot")
         btn_del.clicked.connect(lambda: self.delete_requested.emit(self.screenshot_id))
 
@@ -168,7 +183,7 @@ class MainWindow(QMainWindow):
         header_layout.setContentsMargins(12, 8, 12, 8)
         header_layout.setSpacing(8)
 
-        # Row 1: App Title + Capture Modes (Area, Focus App, App Window, Full, Delay)
+        # Row 1: App Title + Capture Modes
         row1 = QHBoxLayout()
         row1.setSpacing(8)
 
@@ -231,14 +246,14 @@ class MainWindow(QMainWindow):
         row2.addWidget(self.txt_search)
 
         btn_open_dir = QPushButton("📁 Save Folder")
-        btn_open_dir.setIcon(IconGenerator.create_folder_icon(16))
+        btn_open_dir.setIcon(IconGenerator.create_folder_icon(18))
         btn_open_dir.clicked.connect(self.open_save_folder)
         row2.addWidget(btn_open_dir)
 
         row2.addStretch()
 
         lbl_sort = QLabel("Sort:")
-        lbl_sort.setStyleSheet("color: #94a3b8; font-size: 13px; font-weight: 500;")
+        lbl_sort.setStyleSheet("color: #94a3b8; font-size: 13pt; font-weight: 500;")
         row2.addWidget(lbl_sort)
 
         self.combo_sort = QComboBox()
@@ -266,11 +281,11 @@ class MainWindow(QMainWindow):
         # Sync folder first
         self.db.sync_directory(self.config.save_directory)
 
-        # Clear existing layout
-        for i in reversed(range(self.gallery_layout.count())):
-            widget = self.gallery_layout.itemAt(i).widget()
-            if widget:
-                widget.setParent(None)
+        # Clear existing layout completely
+        while self.gallery_layout.count():
+            item = self.gallery_layout.takeAt(0)
+            if item.widget():
+                item.widget().deleteLater()
 
         search_q = self.txt_search.text().strip()
         sort_mode = self.combo_sort.currentText()
@@ -291,14 +306,14 @@ class MainWindow(QMainWindow):
         self.lbl_stats.setText(f"{total_items} Items ({total_mb:.1f} MB)")
 
         if not items:
-            empty_lbl = QLabel("📷 No screenshots found.\nClick '📸 Area' or '🎯 Focus App' above to start!")
+            empty_lbl = QLabel("📷 No screenshots found in history.\nClick '📸 Area' or '🎯 Focus App' above to take your first screenshot!")
             empty_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            empty_lbl.setStyleSheet("color: #64748b; font-size: 16px; margin-top: 40px;")
+            empty_lbl.setStyleSheet("color: #64748b; font-size: 16pt; font-weight: bold; margin-top: 40px;")
             self.gallery_layout.addWidget(empty_lbl, 0, 0)
             return
 
         # Calculate grid columns based on width
-        col_count = max(1, self.width() // 250)
+        col_count = max(1, self.width() // 280)
         for idx, item in enumerate(items):
             row = idx // col_count
             col = idx % col_count
