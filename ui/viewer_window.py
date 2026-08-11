@@ -72,7 +72,14 @@ class FullViewerDialog(QDialog):
         self.item_data = self.db.get_by_id(screenshot_id)
 
         self.setWindowTitle("Screenshot Viewer")
-        self.resize(1100, 700)
+        
+        # Adapt to primary screen geometry
+        screen = QApplication.primaryScreen()
+        if screen:
+            geo = screen.availableGeometry()
+            self.resize(min(1240, geo.width()), min(680, geo.height()))
+        else:
+            self.resize(980, 640)
 
         self.all_items = self.db.get_all(sort_by="newest")
         self.current_index = 0
@@ -96,7 +103,7 @@ class FullViewerDialog(QDialog):
         top_layout.setContentsMargins(12, 8, 12, 8)
 
         self.title_label = QLabel("Screenshot Details")
-        self.title_label.setStyleSheet("font-weight: bold; font-size: 15px; color: #38bdf8;")
+        self.title_label.setStyleSheet("font-weight: bold; font-size: 16px; color: #38bdf8;")
         top_layout.addWidget(self.title_label)
         top_layout.addStretch()
 
@@ -111,7 +118,8 @@ class FullViewerDialog(QDialog):
 
         # Close button
         btn_close = QPushButton("✕")
-        btn_close.setFixedSize(30, 30)
+        btn_close.setFixedSize(34, 34)
+        btn_close.setStyleSheet("font-size: 16px; font-weight: bold;")
         btn_close.clicked.connect(self.accept)
         top_layout.addWidget(btn_close)
 
@@ -130,18 +138,19 @@ class FullViewerDialog(QDialog):
 
         # Zoom controls bar
         zoom_bar = QHBoxLayout()
-        zoom_bar.setContentsMargins(12, 6, 12, 6)
-        
-        btn_fit = QPushButton("Fit to Screen")
+        zoom_bar.setContentsMargins(10, 6, 10, 6)
+        zoom_bar.setSpacing(8)
+
+        btn_fit = QPushButton("🔍 Fit Screen")
         btn_fit.clicked.connect(self.graphics_view.fit_to_screen)
 
         btn_100 = QPushButton("100% Actual")
         btn_100.clicked.connect(self.graphics_view.actual_size)
 
-        btn_zi = QPushButton("Zoom In (+)")
+        btn_zi = QPushButton("Zoom +")
         btn_zi.clicked.connect(self.graphics_view.zoom_in)
 
-        btn_zo = QPushButton("Zoom Out (-)")
+        btn_zo = QPushButton("Zoom -")
         btn_zo.clicked.connect(self.graphics_view.zoom_out)
 
         zoom_bar.addWidget(btn_fit)
@@ -155,34 +164,34 @@ class FullViewerDialog(QDialog):
 
         # Right Panel
         panel = QFrame()
-        panel.setMaximumWidth(340)
-        panel.setMinimumWidth(260)
+        panel.setMaximumWidth(320)
+        panel.setMinimumWidth(240)
         panel.setStyleSheet("background-color: #1e293b; border-left: 1px solid #334155;")
         panel_layout = QVBoxLayout(panel)
-        panel_layout.setContentsMargins(16, 16, 16, 16)
-        panel_layout.setSpacing(12)
+        panel_layout.setContentsMargins(14, 14, 14, 14)
+        panel_layout.setSpacing(10)
 
         # Metadata Header
         meta_title = QLabel("Information")
-        meta_title.setStyleSheet("font-size: 14px; font-weight: bold; color: #f8fafc;")
+        meta_title.setStyleSheet("font-size: 15px; font-weight: bold; color: #f8fafc;")
         panel_layout.addWidget(meta_title)
 
         self.info_filename = QLabel()
         self.info_filename.setWordWrap(True)
-        self.info_filename.setStyleSheet("font-weight: bold; color: #38bdf8;")
+        self.info_filename.setStyleSheet("font-weight: bold; color: #38bdf8; font-size: 14px;")
 
         self.info_dims = QLabel()
-        self.info_dims.setStyleSheet("color: #94a3b8;")
+        self.info_dims.setStyleSheet("color: #94a3b8; font-size: 13px;")
 
         self.info_size = QLabel()
-        self.info_size.setStyleSheet("color: #94a3b8;")
+        self.info_size.setStyleSheet("color: #94a3b8; font-size: 13px;")
 
         self.info_date = QLabel()
-        self.info_date.setStyleSheet("color: #94a3b8;")
+        self.info_date.setStyleSheet("color: #94a3b8; font-size: 13px;")
 
         self.info_path = QLabel()
         self.info_path.setWordWrap(True)
-        self.info_path.setStyleSheet("color: #64748b; font-size: 11px;")
+        self.info_path.setStyleSheet("color: #64748b; font-size: 12px;")
 
         panel_layout.addWidget(self.info_filename)
         panel_layout.addWidget(self.info_dims)
@@ -198,12 +207,12 @@ class FullViewerDialog(QDialog):
 
         # Note Section
         note_hdr = QLabel("📝 Notes")
-        note_hdr.setStyleSheet("font-size: 14px; font-weight: bold; color: #f8fafc;")
+        note_hdr.setStyleSheet("font-size: 15px; font-weight: bold; color: #f8fafc;")
         panel_layout.addWidget(note_hdr)
 
         self.note_edit = QTextEdit()
         self.note_edit.setPlaceholderText("Write notes or details about this screenshot...")
-        self.note_edit.setStyleSheet("min-height: 120px;")
+        self.note_edit.setStyleSheet("min-height: 100px; font-size: 14px;")
         panel_layout.addWidget(self.note_edit)
 
         self.btn_save_note = QPushButton("Save Note")
@@ -216,7 +225,7 @@ class FullViewerDialog(QDialog):
 
         # Action Buttons
         actions_hdr = QLabel("Actions")
-        actions_hdr.setStyleSheet("font-size: 13px; font-weight: bold; color: #94a3b8;")
+        actions_hdr.setStyleSheet("font-size: 14px; font-weight: bold; color: #94a3b8;")
         panel_layout.addWidget(actions_hdr)
 
         self.btn_copy = QPushButton("Copy Image")
@@ -241,7 +250,7 @@ class FullViewerDialog(QDialog):
         panel_layout.addWidget(self.btn_delete)
 
         splitter.addWidget(panel)
-        splitter.setSizes([750, 320])
+        splitter.setSizes([700, 280])
 
         main_layout.addWidget(splitter)
 
