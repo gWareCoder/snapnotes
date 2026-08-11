@@ -61,7 +61,7 @@ class ScreenshotCard(QFrame):
                 pix_loaded = True
 
         if not pix_loaded:
-            self.thumb_label.setText("📷 Preview Unavailable")
+            self.thumb_label.setText("Preview Unavailable")
             self.thumb_label.setStyleSheet("background-color: #0f172a; color: #64748b; font-size: 12pt; border-radius: 6px;")
 
         self.thumb_label.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -97,7 +97,7 @@ class ScreenshotCard(QFrame):
         self.lbl_note = QLabel()
         if note_text:
             snippet = note_text if len(note_text) <= 24 else note_text[:21] + "..."
-            self.lbl_note.setText(f"📝 {snippet}")
+            self.lbl_note.setText(f"Note: {snippet}")
             self.lbl_note.setStyleSheet("color: #10b981; font-size: 13pt; font-weight: 500;")
             self.lbl_note.setToolTip(note_text)
         else:
@@ -197,28 +197,29 @@ class MainWindow(QMainWindow):
 
         row1.addSpacing(6)
 
-        btn_cap_area = QPushButton("📸 Area")
+        btn_cap_area = QPushButton("Area")
+        btn_cap_area.setIcon(IconGenerator.create_camera_icon(18, color="#ffffff", bg="transparent"))
         btn_cap_area.setObjectName("btnPrimary")
         btn_cap_area.setToolTip("Capture selected area of screen")
         btn_cap_area.clicked.connect(self.trigger_capture_area)
         row1.addWidget(btn_cap_area)
 
-        btn_cap_focus = QPushButton("🎯 Focus App")
+        btn_cap_focus = QPushButton("Focus App")
         btn_cap_focus.setToolTip("Click target application to bring to front, then snip area")
         btn_cap_focus.clicked.connect(self.trigger_capture_focus_app)
         row1.addWidget(btn_cap_focus)
 
-        btn_cap_win = QPushButton("🪟 App Window")
+        btn_cap_win = QPushButton("App Window")
         btn_cap_win.setToolTip("Click any application window to capture it directly")
         btn_cap_win.clicked.connect(self.trigger_capture_window)
         row1.addWidget(btn_cap_win)
 
-        btn_cap_full = QPushButton("🖥️ Full")
+        btn_cap_full = QPushButton("Fullscreen")
         btn_cap_full.setToolTip("Capture full screen")
         btn_cap_full.clicked.connect(self.trigger_capture_fullscreen)
         row1.addWidget(btn_cap_full)
 
-        btn_cap_delay = QPushButton("⏱️ 3s")
+        btn_cap_delay = QPushButton("3s Delay")
         btn_cap_delay.setToolTip("Capture after 3 second delay")
         btn_cap_delay.clicked.connect(self.trigger_capture_delayed)
         row1.addWidget(btn_cap_delay)
@@ -229,7 +230,7 @@ class MainWindow(QMainWindow):
         self.lbl_stats.setObjectName("statsLabel")
         row1.addWidget(self.lbl_stats)
 
-        btn_settings = QPushButton("⚙️ Settings")
+        btn_settings = QPushButton("Settings")
         btn_settings.clicked.connect(self.open_settings)
         row1.addWidget(btn_settings)
 
@@ -240,12 +241,12 @@ class MainWindow(QMainWindow):
         row2.setSpacing(10)
 
         self.txt_search = QLineEdit()
-        self.txt_search.setPlaceholderText("🔍 Search notes or filenames...")
+        self.txt_search.setPlaceholderText("Search notes or filenames...")
         self.txt_search.setMinimumWidth(220)
         self.txt_search.textChanged.connect(self.refresh_gallery)
         row2.addWidget(self.txt_search)
 
-        btn_open_dir = QPushButton("📁 Save Folder")
+        btn_open_dir = QPushButton("Save Folder")
         btn_open_dir.setIcon(IconGenerator.create_folder_icon(18))
         btn_open_dir.clicked.connect(self.open_save_folder)
         row2.addWidget(btn_open_dir)
@@ -306,7 +307,7 @@ class MainWindow(QMainWindow):
         self.lbl_stats.setText(f"{total_items} Items ({total_mb:.1f} MB)")
 
         if not items:
-            empty_lbl = QLabel("📷 No screenshots found in history.\nClick '📸 Area' or '🎯 Focus App' above to take your first screenshot!")
+            empty_lbl = QLabel("No screenshots found in history.\nClick 'Area' or 'Focus App' above to take your first screenshot!")
             empty_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
             empty_lbl.setStyleSheet("color: #64748b; font-size: 16pt; font-weight: bold; margin-top: 40px;")
             self.gallery_layout.addWidget(empty_lbl, 0, 0)

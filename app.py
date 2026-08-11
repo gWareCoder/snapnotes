@@ -44,31 +44,31 @@ class SnapNotesApp(QObject):
         menu = QMenu()
         menu.setStyleSheet(DARK_STYLE)
 
-        act_area = QAction(IconGenerator.create_camera_icon(18, color="#38bdf8", bg="transparent"), "📸 Capture Area", self)
+        act_area = QAction(IconGenerator.create_camera_icon(18, color="#38bdf8", bg="transparent"), "Capture Area", self)
         act_area.triggered.connect(self.on_capture_area)
 
-        act_focus = QAction("🎯 Focus Target App & Snip", self)
+        act_focus = QAction("Focus Target App & Snip", self)
         act_focus.triggered.connect(self.on_capture_focus_app)
 
-        act_win = QAction("🪟 Select App Window", self)
+        act_win = QAction("Select App Window", self)
         act_win.triggered.connect(self.on_capture_window)
 
-        act_full = QAction("🖥️ Capture Fullscreen", self)
+        act_full = QAction("Capture Fullscreen", self)
         act_full.triggered.connect(self.on_capture_fullscreen)
 
-        act_delay = QAction("⏱️ Capture Delayed (3s)", self)
+        act_delay = QAction("Capture Delayed (3s)", self)
         act_delay.triggered.connect(self.on_capture_delayed)
 
-        act_gallery = QAction("🖼️ Open Gallery & History", self)
+        act_gallery = QAction("Open Gallery & History", self)
         act_gallery.triggered.connect(self.show_main_window)
 
-        act_folder = QAction(IconGenerator.create_folder_icon(18), "📁 Open Save Folder", self)
+        act_folder = QAction(IconGenerator.create_folder_icon(18), "Open Save Folder", self)
         act_folder.triggered.connect(self.on_open_folder)
 
-        act_settings = QAction("⚙️ Settings", self)
+        act_settings = QAction("Settings", self)
         act_settings.triggered.connect(self.main_window.open_settings)
 
-        act_quit = QAction("❌ Quit SnapNotes", self)
+        act_quit = QAction("Quit SnapNotes", self)
         act_quit.triggered.connect(self.quit_app)
 
         menu.addAction(act_area)
@@ -147,7 +147,6 @@ class SnapNotesApp(QObject):
             dlg.exec()
 
     def on_capture_cancelled(self):
-        # Restore main window if cancelled
         pass
 
     def on_note_saved(self, screenshot_id: int, note_text: str):

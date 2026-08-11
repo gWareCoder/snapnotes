@@ -40,7 +40,7 @@ class PostCaptureDialog(QDialog):
 
         # Header with title and close X button
         header = QHBoxLayout()
-        title_label = QLabel("📸 Screenshot Captured!")
+        title_label = QLabel("Screenshot Captured!")
         title_label.setStyleSheet("font-weight: bold; font-size: 16pt; color: #38bdf8;")
         header.addWidget(title_label)
         header.addStretch()
@@ -83,7 +83,7 @@ class PostCaptureDialog(QDialog):
         card_layout.addLayout(body)
 
         # Note Input
-        note_hdr = QLabel("📝 Add Note / Description:")
+        note_hdr = QLabel("Add Note / Description:")
         note_hdr.setStyleSheet("font-size: 14pt; color: #38bdf8; font-weight: bold;")
         card_layout.addWidget(note_hdr)
 

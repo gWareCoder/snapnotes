@@ -28,13 +28,13 @@ class SettingsDialog(QDialog):
         main_layout.setSpacing(14)
 
         # Storage Location Group
-        group_storage = QGroupBox("📁 Screenshot Storage Location")
-        group_storage.setStyleSheet("QGroupBox { font-weight: bold; color: #38bdf8; margin-top: 10px; } QGroupBox::title { subcontrol-origin: margin; left: 10px; }")
+        group_storage = QGroupBox("Screenshot Storage Location")
+        group_storage.setStyleSheet("QGroupBox { font-weight: bold; color: #38bdf8; margin-top: 10px; font-size: 14pt; } QGroupBox::title { subcontrol-origin: margin; left: 10px; }")
         storage_layout = QVBoxLayout(group_storage)
         storage_layout.setSpacing(8)
 
         lbl_desc = QLabel("Screenshots will be saved automatically to this folder:")
-        lbl_desc.setStyleSheet("color: #94a3b8; font-size: 12px;")
+        lbl_desc.setStyleSheet("color: #94a3b8; font-size: 13pt;")
         storage_layout.addWidget(lbl_desc)
 
         path_row = QHBoxLayout()
@@ -43,7 +43,7 @@ class SettingsDialog(QDialog):
         path_row.addWidget(self.txt_path)
 
         btn_browse = QPushButton("Browse...")
-        btn_browse.setIcon(IconGenerator.create_folder_icon(16))
+        btn_browse.setIcon(IconGenerator.create_folder_icon(18))
         btn_browse.clicked.connect(self.browse_folder)
         path_row.addWidget(btn_browse)
 
@@ -51,8 +51,8 @@ class SettingsDialog(QDialog):
         main_layout.addWidget(group_storage)
 
         # Capture Behavior Group
-        group_behavior = QGroupBox("⚡ Capture Options & Behavior")
-        group_behavior.setStyleSheet("QGroupBox { font-weight: bold; color: #38bdf8; margin-top: 10px; } QGroupBox::title { subcontrol-origin: margin; left: 10px; }")
+        group_behavior = QGroupBox("Capture Options & Behavior")
+        group_behavior.setStyleSheet("QGroupBox { font-weight: bold; color: #38bdf8; margin-top: 10px; font-size: 14pt; } QGroupBox::title { subcontrol-origin: margin; left: 10px; }")
         beh_layout = QVBoxLayout(group_behavior)
         beh_layout.setSpacing(10)
 
@@ -75,11 +75,11 @@ class SettingsDialog(QDialog):
         main_layout.addWidget(group_behavior)
 
         # Quick Hotkey info
-        group_hotkey = QGroupBox("⌨️ Global Shortcut / Hotkey Tip")
-        group_hotkey.setStyleSheet("QGroupBox { font-weight: bold; color: #38bdf8; margin-top: 10px; } QGroupBox::title { subcontrol-origin: margin; left: 10px; }")
+        group_hotkey = QGroupBox("Global Shortcut / Hotkey Tip")
+        group_hotkey.setStyleSheet("QGroupBox { font-weight: bold; color: #38bdf8; margin-top: 10px; font-size: 14pt; } QGroupBox::title { subcontrol-origin: margin; left: 10px; }")
         hk_layout = QVBoxLayout(group_hotkey)
         lbl_hk = QLabel("You can bind system shortcut keys (e.g., Ctrl+Shift+S or PrintScreen) in your OS settings to launch:\n  python3 /home/tomg/snapnotes/main.py --capture")
-        lbl_hk.setStyleSheet("color: #94a3b8; font-size: 11px;")
+        lbl_hk.setStyleSheet("color: #94a3b8; font-size: 12pt;")
         hk_layout.addWidget(lbl_hk)
         main_layout.addWidget(group_hotkey)
 

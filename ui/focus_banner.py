@@ -40,7 +40,7 @@ class FocusBannerWidget(QWidget):
             }
             QLabel {
                 color: #ffffff;
-                font-size: 14px;
+                font-size: 14pt;
                 font-weight: bold;
             }
             QPushButton {
@@ -49,7 +49,7 @@ class FocusBannerWidget(QWidget):
                 border: 1px solid #38bdf8;
                 border-radius: 6px;
                 padding: 5px 12px;
-                font-size: 13px;
+                font-size: 13pt;
                 font-weight: bold;
             }
             QPushButton:hover {
@@ -61,10 +61,10 @@ class FocusBannerWidget(QWidget):
         card_layout.setContentsMargins(10, 6, 10, 6)
         card_layout.setSpacing(12)
 
-        self.lbl_status = QLabel(f"🎯 Click target application to focus... ({self.remaining_seconds}s)")
+        self.lbl_status = QLabel(f"Click target app to focus... ({self.remaining_seconds}s)")
         card_layout.addWidget(self.lbl_status)
 
-        btn_snip = QPushButton("📸 Snip Now")
+        btn_snip = QPushButton("Snip Now")
         btn_snip.clicked.connect(self.trigger_snip)
         card_layout.addWidget(btn_snip)
 
@@ -74,7 +74,7 @@ class FocusBannerWidget(QWidget):
         card_layout.addWidget(btn_more)
 
         btn_cancel = QPushButton("✕")
-        btn_cancel.setFixedSize(28, 28)
+        btn_cancel.setFixedSize(30, 30)
         btn_cancel.clicked.connect(self.cancel)
         card_layout.addWidget(btn_cancel)
 
@@ -94,14 +94,14 @@ class FocusBannerWidget(QWidget):
     def on_timer_tick(self):
         self.remaining_seconds -= 1
         if self.remaining_seconds > 0:
-            self.lbl_status.setText(f"🎯 Click target application to focus... ({self.remaining_seconds}s)")
+            self.lbl_status.setText(f"Click target app to focus... ({self.remaining_seconds}s)")
         else:
             self.timer.stop()
             self.trigger_snip()
 
     def add_time(self):
         self.remaining_seconds += 2
-        self.lbl_status.setText(f"🎯 Click target application to focus... ({self.remaining_seconds}s)")
+        self.lbl_status.setText(f"Click target app to focus... ({self.remaining_seconds}s)")
 
     def trigger_snip(self):
         self.timer.stop()

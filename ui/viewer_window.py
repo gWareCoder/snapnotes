@@ -141,7 +141,7 @@ class FullViewerDialog(QDialog):
         zoom_bar.setContentsMargins(10, 6, 10, 6)
         zoom_bar.setSpacing(8)
 
-        btn_fit = QPushButton("🔍 Fit Screen")
+        btn_fit = QPushButton("Fit Screen")
         btn_fit.clicked.connect(self.graphics_view.fit_to_screen)
 
         btn_100 = QPushButton("100% Actual")
@@ -206,7 +206,7 @@ class FullViewerDialog(QDialog):
         panel_layout.addWidget(divider)
 
         # Note Section
-        note_hdr = QLabel("📝 Notes")
+        note_hdr = QLabel("Notes")
         note_hdr.setStyleSheet("font-size: 15pt; font-weight: bold; color: #f8fafc;")
         panel_layout.addWidget(note_hdr)
 
